@@ -1,0 +1,13 @@
+version=0.26.2
+profile=janestreet
+
+margin=70
+break-cases=all
+if-then-else=k-r
+type-decl=sparse
+break-infix=wrap
+parens-tuple=always
+exp-grouping=preserve
+break-string-literals=never
+assignment-operator=begin-line
+break-separators=before
