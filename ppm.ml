@@ -3,10 +3,9 @@ open Stdio.Out_channel
 
 exception Out_of_Bounds of string
 
-let maximum = -1 + Int.pow 2 8
-
 let write_header ~w ~h =
-  print_string (Printf.sprintf "P6\n%d %d\n%d\n" w h maximum)
+  print_string
+    (Printf.sprintf "P6\n%d %d\n%.0f\n" w h Color.max_value)
 ;;
 
 let write_pixel (r, g, b) =
@@ -14,7 +13,7 @@ let write_pixel (r, g, b) =
   let open Float in
   if
     List.for_all
-      ~f:(fun i -> between i ~low:0. ~high:(of_int maximum))
+      ~f:(fun i -> between i ~low:0. ~high:Color.max_value)
       [ r; g; b ]
   then (
     let rgb = Bytes.create 3 in
