@@ -1,0 +1,4 @@
+(library
+ (name raytracer)
+ (modes byte native)
+ (libraries base stdio))

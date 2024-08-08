@@ -1,0 +1,5 @@
+(executable
+ (public_name raytracer)
+ (name main)
+ (modes byte exe)
+ (libraries raytracer))
