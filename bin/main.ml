@@ -26,10 +26,9 @@ let pixel_dv = Vector.div vv (Int.to_float frame_h)
 let viewport_upper_left =
   Point.translate
     camera_center
-    (Vector.neg
-       (Vector.sub
-          ~from:(Vector.make (0., 0., focal_length))
-          (Vector.sub (Vector.div vv 2.) ~from:(Vector.div vu 2.))))
+    (Vector.add
+       (Vector.make (0., 0., focal_length))
+       (Vector.neg (Vector.add (Vector.div vv 2.) (Vector.div vu 2.))))
 ;;
 
 let pixel00_loc =
@@ -44,14 +43,26 @@ let hit_sphere center radius ({ source; direction } : Ray.ray) =
   let b = -2.0 *. Vector.dot direction oc in
   let c = Vector.dot oc oc -. (radius ** 2.) in
   let discriminant = (b ** 2.) -. (4. *. a *. c) in
-  discriminant >= 0.
+  if discriminant < 0. then
+    -1.0
+  else
+    (-.b -. Float.sqrt discriminant) /. (2.0 *. a)
 ;;
 
 let () =
   let shade ray =
-    if hit_sphere (Point.make (0., 0., -1.)) 0.5 ray then
-      Color.make (1., 0., 0.)
-    else (
+    let t = hit_sphere (Point.make (0., 0., 1.)) 0.5 ray in
+    if t > 0. then (
+      let n =
+        Vector.uv
+          (Point.displacement
+             ~s:(Ray.at t ray)
+             ~d:(Point.make (0., 0., -1.)))
+      in
+      Color.scale
+        (Color.make (n.dx +. 1., n.dy +. 1., n.dz +. 1.))
+        ~by:0.5
+    ) else (
       let uv = Vector.uv ray.direction in
       let a = 0.5 *. (uv.dy +. 1.) in
       Color.mix

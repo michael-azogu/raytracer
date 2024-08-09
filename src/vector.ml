@@ -4,7 +4,6 @@ type vector =
   ; dz : float
   }
 
-let a = 0
 let make (dx, dy, dz) = { dx; dy; dz }
 
 let rec neg v = scale v ~by:(-1.)
