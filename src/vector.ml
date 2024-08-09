@@ -5,6 +5,7 @@ type vector =
   }
 
 let make (dx, dy, dz) = { dx; dy; dz }
+let zero = make (0., 0., 0.)
 
 let rec neg v = scale v ~by:(-1.)
 and uv v = div v (magnitude v)

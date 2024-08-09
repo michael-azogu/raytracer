@@ -17,7 +17,7 @@ let actual_ratio = Float.of_int frame_w /. Float.of_int frame_h
 let vh = 2.0
 let vw = vh *. actual_ratio
 let focal_length = 1.0
-let camera_center = Point.make (0., 0., 0.)
+let camera_center = Point.zero
 let vu = Vector.make (vw, 0., 0.)
 let vv = Vector.make (0., -.vh, 0.)
 let pixel_du = Vector.div vu (Int.to_float frame_w)
@@ -39,14 +39,14 @@ let pixel00_loc =
 
 let hit_sphere center radius ({ source; direction } : Ray.ray) =
   let oc = Point.displacement ~s:center ~d:(Point.neg source) in
-  let a = Vector.dot direction direction in
-  let b = -2.0 *. Vector.dot direction oc in
-  let c = Vector.dot oc oc -. (radius ** 2.) in
-  let discriminant = (b ** 2.) -. (4. *. a *. c) in
+  let a = Vector.msq direction in
+  let h = Vector.dot direction oc in
+  let c = Vector.msq oc -. (radius ** 2.) in
+  let discriminant = (h ** 2.) -. (a *. c) in
   if discriminant < 0. then
     -1.0
   else
-    (-.b -. Float.sqrt discriminant) /. (2.0 *. a)
+    (h -. Float.sqrt discriminant) /. a
 ;;
 
 let () =

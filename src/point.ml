@@ -5,6 +5,7 @@ type point =
   }
 
 let make (x, y, z) = { x; y; z }
+let zero = make (0., 0., 0.)
 
 let translate { x; y; z } ({ dx; dy; dz } : Vector.vector) =
   make (x +. dx, y +. dy, z +. dz)
