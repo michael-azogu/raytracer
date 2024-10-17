@@ -1,6 +1,9 @@
 #!/bin/bash
 
-dune fmt >/dev/null 2>&1 &&
-  dune exec raytracer >render.ppm
+dune fmt >/dev/null 2>&1
 
-cp _build/default/main.bc ./debug.bc
+dune exec raytracer >render.ppm
+
+# cp _build/default/main.bc ./debug.bc
+
+convert render.ppm -quality 100 render.jpg
